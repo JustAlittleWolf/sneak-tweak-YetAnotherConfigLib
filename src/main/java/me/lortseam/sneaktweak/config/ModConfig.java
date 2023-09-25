@@ -1,47 +1,48 @@
 package me.lortseam.sneaktweak.config;
 
 import lombok.Getter;
-import me.lortseam.completeconfig.api.ConfigContainer;
-import me.lortseam.completeconfig.api.ConfigEntries;
-import me.lortseam.completeconfig.api.ConfigEntry;
-import me.lortseam.completeconfig.data.Config;
-import me.lortseam.sneaktweak.SneakTweak;
-import net.minecraft.client.MinecraftClient;
+import dev.isxander.yacl.config.ConfigEntry;
+import dev.isxander.yacl.config.GsonConfigInstance;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
-@ConfigEntries(includeAll = true)
-public final class ModConfig extends Config implements ConfigContainer {
+import java.nio.file.Path;
+
+public final class ModConfig {
+    public static GsonConfigInstance<ModConfig> configInstance = GsonConfigInstance.createBuilder(ModConfig.class)
+            .setPath(Path.of("./config/sneaktweak-yacl.json"))
+            .build();
+    public static ModConfig getConfig() {
+        return ModConfig.configInstance.getConfig();
+    }
 
     @Getter
-    private static boolean smoothingEnabled = true;
-    @ConfigEntry.BoundedInteger(min = 25, max = 300)
-    @ConfigEntry.Slider
-    private static int speedPercentage = 100;
-    private static SneakingEyeHeightType sneakingEyeHeightPreset = SneakingEyeHeightType.DEFAULT;
-    @ConfigEntry.BoundedFloat(min = 0, max = 1.8f)
-    private static float customSneakingEyeHeight = 1.27f;
-    private static boolean modifyThirdPersonSneakingEyeHeight = false;
+    @Setter
+    @ConfigEntry
+    public boolean smoothingEnabled = true;
 
-    public ModConfig() {
-        super(SneakTweak.MOD_ID);
-    }
+    @Getter
+    @Setter
+    @ConfigEntry
+    public float speedModifier = 1.0f;
 
-    public static float getSpeedModifier() {
-        return speedPercentage / 100f;
-    }
+    @Accessors(fluent = true)
+    @Getter
+    @Setter
+    @ConfigEntry
+    public boolean increaseSneakingHeight = false;
 
-    public static float modifySneakingEyeHeight(float height) {
-        if (MinecraftClient.getInstance().options.getPerspective().isFirstPerson() || modifyThirdPersonSneakingEyeHeight) {
-            height = switch (sneakingEyeHeightPreset) {
-                case DEFAULT -> height;
-                case PRE_1_14 -> 1.42f;
-                case PRE_1_9 -> 1.54f;
-                case CUSTOM -> customSneakingEyeHeight;
-            };
-        }
-        return height;
-    }
+    @Getter
+    @Setter
+    @ConfigEntry
+    public float sneakHeightModifier = 1.42f;
 
-    private enum SneakingEyeHeightType {
+    @Getter
+    @Setter
+    @ConfigEntry
+    public boolean modifyThirdPersonSneakingEyeHeight = false;
+
+    public enum SneakingEyeHeightType {
 
         DEFAULT,
         PRE_1_14,

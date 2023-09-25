@@ -13,19 +13,10 @@ group = project.maven_group
 repositories {
     mavenLocal()
     maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-    maven {
         url "https://maven.terraformersmc.com/"
     }
     maven {
-        url "https://maven.shedaniel.me/"
-    }
-    maven {
         url "https://maven.isxander.dev/releases"
-    }
-    maven {
-        url "https://jitpack.io"
     }
 }
 
@@ -33,9 +24,9 @@ dependencies {
     minecraft("com.mojang:minecraft:$minecraft_version")
     mappings("net.fabricmc:yarn:$yarn_mappings:v2")
     modImplementation("net.fabricmc:fabric-loader:$loader_version")
+    modImplementation "dev.isxander:yet-another-config-lib:$yetanotherconfiglib_version"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:$fabric_version"
-    modImplementation("com.github.Lortseam.completeconfig:gui-yacl:$completeconfig_version")
     modImplementation("com.terraformersmc:modmenu:$modmenu_version")
 }
 

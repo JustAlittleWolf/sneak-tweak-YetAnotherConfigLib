@@ -6,6 +6,8 @@
 
 </div>
 
+This version has the completeconfig dependency removed whilst preserving all functionality
+
 ## Support
 To report a bug or suggest a new feature, please create an [issue](https://github.com/Lortseam/sneak-tweak/issues).
 For questions, please use the [discussions](https://github.com/Lortseam/sneak-tweak/discussions).
