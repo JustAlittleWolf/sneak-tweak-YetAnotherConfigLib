@@ -2,6 +2,7 @@ package me.lortseam.sneaktweak.mixin;
 
 import com.mojang.authlib.GameProfile;
 import me.lortseam.sneaktweak.config.ModConfig;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -19,10 +20,9 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
     @Override
     public float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         float height = super.getActiveEyeHeight(pose, dimensions);
-        if (pose == EntityPose.CROUCHING && wouldPoseNotCollide(EntityPose.STANDING)) { // Don't modify height if player stands under a block
-            height = ModConfig.modifySneakingEyeHeight(height);
-        }
-        return height;
+        if(!ModConfig.getConfig().increaseSneakingHeight()) return height;
+        if (pose != EntityPose.CROUCHING || !wouldNotSuffocateInPose(EntityPose.STANDING)) return height;
+        return ModConfig.getConfig().getSneakHeightModifier();
     }
 
 }
